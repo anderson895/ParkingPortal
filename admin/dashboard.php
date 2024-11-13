@@ -5,53 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PARKING PORTAL</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+   
+
+
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="bg-gray-100 p-6">
 
-    <!-- Header with Search, Table Toggle Buttons, and Logout -->
+    <!-- Navigation Bar -->
+    <nav class="bg-blue-600 text-white p-4 mb-6 rounded-lg shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-xl font-bold">Parking Portal</a>
+            <ul class="flex space-x-6">
+                <li><button onclick="showTable('recordTable')" class="hover:text-blue-300">Record</button></li>
+                <li><button onclick="showTable('archivedTable')" class="hover:text-blue-300">Archived</button></li>
+                <li><button onclick="location.href='logout.php';" class="hover:text-blue-300">Logout</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header with Search -->
     <div class="flex items-center justify-between mb-4 space-x-4">
         <input type="text" placeholder="Search..." class="w-1/4 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200" id="searchInput" onkeyup="filterTable()">
-        
-        <!-- Buttons to Toggle Tables -->
-        <div class="space-x-2">
-            <button onclick="showTable('recordTable')" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Table Record</button>
-            <button onclick="showTable('archivedTable')" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Table Archived</button>
-        </div>
-        
-        <button onclick="location.href='logout.php';" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">Logout</button>
     </div>
 
     <!-- Record Table -->
-    <div class="overflow-x-auto bg-white shadow-md rounded-lg p-4" id="recordTable">
-        <h2 class="text-xl font-semibold mb-4">Record Table</h2>
-        <table class="min-w-full table-auto">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Picture of Car</th>
-                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Car Owner's Name</th>
-                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Vehicle Model</th>
-                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Plate Number</th>
-                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Condo Unit Number</th>
-                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">RFID Number</th>
-                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Time In</th>
-                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Time Out</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="border-t">
-                    <td class="px-4 py-2 text-sm text-gray-600"><img src="https://getcarparkingmultiplayer.com/wp-content/uploads/2024/07/Car-Parking-multiplayer-with-Unlimited-money.webp" alt="Car Picture" class="w-12 h-12 object-cover"></td>
-                    <td class="px-4 py-2 text-sm text-gray-600">John Doe</td>
-                    <td class="px-4 py-2 text-sm text-gray-600">Toyota Corolla</td>
-                    <td class="px-4 py-2 text-sm text-gray-600">ABC 123</td>
-                    <td class="px-4 py-2 text-sm text-gray-600">Unit 205</td>
-                    <td class="px-4 py-2 text-sm text-gray-600">RF123456</td>
-                    <td class="px-4 py-2 text-sm text-gray-600">10:00 AM</td>
-                    <td class="px-4 py-2 text-sm text-gray-600">5:00 PM</td>
-                </tr>
-                <!-- Add more rows as needed -->
-            </tbody>
-        </table>
-    </div>
+<div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-semibold">Record</h2>
+    <button id="openModalBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center">
+        <span class="text-lg">+ </span> Add new
+    </button>
+</div>
+
+<div class="overflow-x-auto bg-white shadow-md rounded-lg p-4" id="recordTable">
+    <table class="min-w-full table-auto">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Picture of Car</th>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Car Owner's Name</th>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Vehicle Model</th>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Plate Number</th>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Condo Unit Number</th>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">RFID Number</th>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Time In</th>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Time Out</th>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+</div>
+
 
     <!-- Archived Table (Initially Hidden) -->
     <div class="overflow-x-auto bg-white shadow-md rounded-lg p-4 hidden" id="archivedTable">
@@ -83,27 +89,10 @@
         </table>
     </div>
 
-    <!-- JavaScript for Table Toggle and Search Functionality -->
-    <script>
-        function showTable(tableId) {
-            document.getElementById("recordTable").classList.add("hidden");
-            document.getElementById("archivedTable").classList.add("hidden");
-            document.getElementById(tableId).classList.remove("hidden");
-        }
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-        function filterTable() {
-            const input = document.getElementById("searchInput").value.toLowerCase();
-            const rows = document.getElementById("recordTable").classList.contains("hidden") ? 
-                document.getElementById("archivedTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr") : 
-                document.getElementById("recordTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+    <?php include "modals.php"; ?>
 
-            for (let i = 0; i < rows.length; i++) {
-                let rowText = rows[i].textContent.toLowerCase();
-                rows[i].style.display = rowText.includes(input) ? "" : "none";
-            }
-        }
-
-    </script>
-
+    <script src="../js/dashboard.js"></script>
 </body>
 </html>
