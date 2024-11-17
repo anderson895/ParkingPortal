@@ -23,6 +23,14 @@ function initModalActions() {
             $('#myModalAddCar').fadeOut();
         }
     });
+
+
+
+
+   
+
+
+    // myModalUpdateCar
 }
 
 // Auto-refresh function for car tables
@@ -68,7 +76,11 @@ function initFormSubmission() {
             success: function (response) {
                 console.log(response);
                 alertify.success('Record saved successfully!');
-                $('#myModalAddCar').fadeOut();
+                $('#carName').val('')
+                $('#carType').val('')
+                $('#plateNumber').val('')
+                $('#condo').val('')
+                $('#RFID').val('')
                 // location.reload();
             },
             error: function (xhr, status, error) {
@@ -76,6 +88,32 @@ function initFormSubmission() {
             }
         });
     });
+
+
+
+    $('#frmCar_update').on('submit', function (event) {
+        event.preventDefault();
+        var formData = new FormData(this);
+        formData.append('requestType', 'UpdateCar');
+
+        $.ajax({
+            url: '../backend/endpoints/controller.php',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                console.log(response);
+                alertify.success('Record saved successfully!');
+                $('#myModalUpdateCar').fadeOut();
+                // location.reload();
+            },
+            error: function (xhr, status, error) {
+                alert('An error occurred. Please try again.');
+            }
+        });
+    });
+
 }
 
 // Fetch car data for active cars
@@ -140,7 +178,19 @@ function displayCars(cars, tableSelector) {
                         <button class="btnArchiveCar bg-blue-600 hover:bg-gray-300 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
                         data-carID=${car.car_id}>
                             Archive
-                        </button>` : `
+                        </button>
+                        <button class="btnUpdateCar bg-green-600 hover:bg-gray-300 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        data-carID=${car.car_id}
+                        data-carName="${car.carName}"
+                        data-carType="${car.carType}"
+                        data-plateNumber="${car.plateNumber}"
+                        data-condo="${car.condo}"
+                        data-RFID="${car.RFID}"
+                        >
+                            Update
+                        </button>
+                        
+                        ` : `
                         <button class="btnRestoreCar bg-green-600 hover:bg-gray-300 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
                         data-carID=${car.car_id}>
                             Restore
@@ -217,3 +267,25 @@ $(document).on('click', '.btnArchiveCar', function () {
         }
     });
 });
+
+
+
+
+
+$(document).on('click', '.btnUpdateCar', function () {
+    
+    $('#carName_update').val($(this).attr('data-carName'))
+    $('#carType_update').val($(this).attr('data-carType'))
+    $('#plateNumber_update').val($(this).attr('data-plateNumber'))
+    $('#condo_update').val($(this).attr('data-condo'))
+    $('#RFID_update').val($(this).attr('data-RFID'))
+    $('#myModalUpdateCar').fadeIn();
+
+});
+
+$(document).on('click', '.closeModalBtn', function () {
+        $('#myModalUpdateCar').fadeOut();
+
+});
+
+

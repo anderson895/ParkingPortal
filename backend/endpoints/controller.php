@@ -74,6 +74,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
 
 
+    }else if($_POST['requestType'] == 'UpdateCar'){
+            
+          // Handle the uploaded file
+if (isset($_FILES['carImage']) && $_FILES['carImage']['error'] == 0) {
+    $uploadedFile = $_FILES['carImage'];
+    $uploadDir = '../../CarImages/';
+    $fileName = basename($uploadedFile['name']);
+    $uploadFilePath = $uploadDir . $fileName;
+
+    // Ensure the directory exists
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
+    // Temporarily store the uploaded file before confirmation
+    $tempFilePath = $uploadDir . 'temp_' . $fileName;
+    if (move_uploaded_file($uploadedFile['tmp_name'], $tempFilePath)) {
+        $carImage = $fileName; // Store the filename in the variable
+    } else {
+        $carImage = null; // No image uploaded
+    }
+} else {
+    $carImage = null; // No image uploaded
+}
+
+        // Collect other form data
+        $carName = $_POST['carName'];
+        $carType = $_POST['carType'];
+        $plateNumber = $_POST['plateNumber'];
+        $condo = $_POST['condo'];
+        $RFID = $_POST['RFID'];
+
+        // Call the UpdateCars function to insert the data into the database
+        $user = $db->UpdateCars($carName, $carType, $plateNumber, $condo, $RFID, $carImage);
+
+        if ($user) {
+            // If the update is successful, handle the image replacement
+            if ($carImage) {
+                // Check if an old file exists and delete it
+                $existingFilePath = $uploadDir . $fileName;
+                if (file_exists($existingFilePath)) {
+                    unlink($existingFilePath); // Delete the old file
+                }
+
+                // Rename the temporary file to the final file path
+                rename($tempFilePath, $existingFilePath);
+            }
+
+            echo "Car record updated successfully!";
+        } else {
+            // If update fails, clean up the temporary file
+            if (isset($tempFilePath) && file_exists($tempFilePath)) {
+                unlink($tempFilePath); // Remove temporary file
+            }
+
+            echo "Error updating car record.";
+        }
+
+        
+
+
     }else if($_POST['requestType'] == 'ArchivedCar'){
 
         $carID=$_POST['carID'];

@@ -51,6 +51,41 @@ class global_class extends db_connect
         }
     }
 
+
+    public function UpdateCars($carName, $carType, $plateNumber, $condo, $RFID, $CarImage)
+    {
+        // Base query without CarImage update
+        $sql = "UPDATE `cars` 
+                SET carName = ?, carType = ?, plateNumber = ?, condo = ?, RFID = ?";
+        
+        // Append CarImage update only if it's provided
+        if (!empty($CarImage)) {
+            $sql .= ", CarImage = ?";
+        }
+    
+        // Add a condition to identify the record to update (e.g., by RFID or plateNumber)
+        $sql .= " WHERE RFID = ?";
+    
+        $query = $this->conn->prepare($sql);
+        if ($query === false) {
+            return false;
+        }
+    
+        // Bind parameters dynamically based on CarImage presence
+        if (!empty($CarImage)) {
+            $query->bind_param("sssssss", $carName, $carType, $plateNumber, $condo, $RFID, $CarImage, $RFID);
+        } else {
+            $query->bind_param("ssssss", $carName, $carType, $plateNumber, $condo, $RFID, $RFID);
+        }
+    
+        if ($query->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+
     
     public function ArchivedCar($carID){
         $query = $this->conn->prepare("UPDATE `cars` SET `carStatus` = '0' WHERE `cars`.`car_id` = ?");

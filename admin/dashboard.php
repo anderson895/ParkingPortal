@@ -41,6 +41,7 @@
 </div>
 
 <div class="overflow-x-auto bg-white shadow-md rounded-lg p-4" id="recordTable">
+    <h2 class="text-xl font-semibold mb-4">List of Cars</h2>
     <table class="min-w-full table-auto">
         <thead class="bg-gray-100">
             <tr>
