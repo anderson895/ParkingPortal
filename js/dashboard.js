@@ -177,34 +177,41 @@ function displayCars(cars, tableSelector) {
                 <td class="px-4 py-2 text-sm text-gray-600">${car.timeIn ? car.timeIn : 'No Time In'}</td>
                 <td class="px-4 py-2 text-sm text-gray-600">${car.timeOut ? car.timeOut : 'No Time Out'}</td>
                 <td class="px-4 py-2 text-sm text-gray-600">
-                    ${tableSelector === '#recordTable tbody' ? `
-                        <button class="btnArchiveCar bg-blue-600 hover:bg-gray-300 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
-                        data-carID=${car.car_id}>
-                            Archive
-                        </button>
-                        <button class="btnUpdateCar bg-green-600 hover:bg-gray-300 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
-                        data-carID=${car.car_id}
-                        data-carName="${car.carName}"
-                        data-carType="${car.carType}"
-                        data-plateNumber="${car.plateNumber}"
-                        data-condo="${car.condo}"
-                        data-RFID="${car.RFID}"
-                        >
-                            Update
-                        </button>
-                        
+                    <div class="flex space-x-2 overflow-x-auto scrollbar-hidden">
+                        ${tableSelector === '#recordTable tbody' ? `
+                            <button class="btnArchiveCar bg-blue-600 hover:bg-gray-300 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            data-carID=${car.car_id}>
+                                Archive
+                            </button>
+                            <button class="btnUpdateCar bg-green-600 hover:bg-gray-300 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            data-carID=${car.car_id}
+                            data-carName="${car.carName}"
+                            data-carType="${car.carType}"
+                            data-plateNumber="${car.plateNumber}"
+                            data-condo="${car.condo}"
+                            data-RFID="${car.RFID}"
+                            >
+                                Update
+                            </button>
+                         
                         ` : `
-                        <button class="btnRestoreCar bg-green-600 hover:bg-gray-300 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
-                        data-carID=${car.car_id}>
-                            Restore
-                        </button>`}
-                </td>
+                            <button class="btnRestoreCar bg-green-600 hover:bg-gray-300 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            data-carID=${car.car_id}>
+                                Restore
+                            </button>`}
 
+                               <button class="btnViewCar bg-yellow-600 hover:bg-gray-300 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            data-carID=${car.car_id}>
+                                View
+                            </button>
+                    </div>
+                </td>
             </tr>
         `;
         tableBody.append(carRow);
     });
 }
+
 
 // Handle archiving a car
 
@@ -226,8 +233,7 @@ $(document).on('click', '.btnRestoreCar', function () {
             console.log(response);
             if (response === "success") {
                 alertify.success('Car Restore successfully!');
-                fetchCars();
-                fetchArchivedCars();
+                location.reload();
             } else {
                 alertify.error('Failed to update car status. Please try again.');
             }

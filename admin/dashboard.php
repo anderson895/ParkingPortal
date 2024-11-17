@@ -81,7 +81,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="border-t">
+                <!-- <tr class="border-t">
                     <td class="px-4 py-2 text-sm text-gray-600"><img src="https://carwow-uk-wp-0.imgix.net/18015-MC20BluInfinito-scaled-e1666008987698-600x338.jpg?auto=format&cs=tinysrgb&fit=crop&h=&ixlib=rb-1.1.0&q=60&w=1600" alt="Car Picture" class="w-12 h-12 object-cover"></td>
                     <td class="px-4 py-2 text-sm text-gray-600">Jane Smith</td>
                     <td class="px-4 py-2 text-sm text-gray-600">Honda Civic</td>
@@ -89,7 +89,7 @@
                     <td class="px-4 py-2 text-sm text-gray-600">Unit 101</td>
                     <td class="px-4 py-2 text-sm text-gray-600">RF654321</td>
                     <td class="px-4 py-2 text-sm text-gray-600">2024-10-01</td>
-                </tr>
+                </tr> -->
                 <!-- Add more rows as needed -->
             </tbody>
         </table>
