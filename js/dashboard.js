@@ -127,10 +127,13 @@ function fetchCars() {
         data: { requestType: 'GetAllCars' },
         dataType: 'json',
         success: function (response) {
+
+            console.log(response)
+
             if (response.status === 'success') {
                 displayCars(response.data, '#recordTable tbody');
             } else {
-                // console.log(response.message);
+                console.log(response.message);
             }
         },
         error: function (xhr, status, error) {
@@ -174,8 +177,13 @@ function displayCars(cars, tableSelector) {
                 <td class="px-4 py-2 text-sm text-gray-600">${car.plateNumber}</td>
                 <td class="px-4 py-2 text-sm text-gray-600">${car.condo}</td>
                 <td class="px-4 py-2 text-sm text-gray-600">${car.RFID}</td>
-                <td class="px-4 py-2 text-sm text-gray-600">${car.timeIn ? car.timeIn : 'No Time In'}</td>
-                <td class="px-4 py-2 text-sm text-gray-600">${car.timeOut ? car.timeOut : 'No Time Out'}</td>
+                <td class="px-4 py-2 text-sm text-gray-600">
+                    ${car.time_in ? new Date(car.time_in).toLocaleTimeString() : 'No Time In'}
+                </td>
+                <td class="px-4 py-2 text-sm text-gray-600">
+                    ${car.time_out ? new Date(car.time_out).toLocaleTimeString() : 'No Time Out'}
+                </td>
+
                 <td class="px-4 py-2 text-sm text-gray-600">
                     <div class="flex space-x-2 overflow-x-auto scrollbar-hidden">
                         ${tableSelector === '#recordTable tbody' ? `
