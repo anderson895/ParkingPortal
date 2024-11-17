@@ -42,6 +42,10 @@
         <h3 class="text-xl font-semibold mb-4">Update Car</h3>
         <!-- Modal Content (form or content) -->
         <form id="frmCar_update">
+
+            <label for="carName" class="block mb-2">Car ID:</label>
+            <input type="text" hidden id="carId_update" name="carId"  required>
+
             <label for="carName" class="block mb-2">Car Owner's Name:</label>
             <input type="text" id="carName_update" name="carName" class="border p-2 mb-4 w-full" placeholder="Enter car owner's name" required>
             
@@ -59,7 +63,7 @@
             
             <!-- Image Upload Field -->
             <label for="carImage" class="block mb-2">Upload Car Image:</label>
-            <input type="file" id="carImage_update" name="carImage" class="border p-2 mb-4 w-full" required>
+            <input type="file" id="carImage_update" name="carImage" class="border p-2 mb-4 w-full" >
             
             <!-- Add more form fields as needed -->
             

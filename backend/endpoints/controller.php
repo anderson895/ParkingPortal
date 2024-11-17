@@ -77,67 +77,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     }else if($_POST['requestType'] == 'UpdateCar'){
             
-        if (isset($_FILES['carImage']) && $_FILES['carImage']['error'] == 0) {
-            $uploadedFile = $_FILES['carImage'];
-            $uploadDir = '../../CarImages/';
-            
-            // Extract file extension
-            $fileExtension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
-            
-            // Generate a unique file name using uniqid and append the file extension
-            $uniqueFileName = uniqid('car_', true) . '.' . $fileExtension;
-            $uploadFilePath = $uploadDir . $uniqueFileName;
-            
-            // Ensure the directory exists
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
-            }
-        
-            // Create a temporary file path
-            $tempFilePath = $uploadDir . 'temp_' . $uniqueFileName;
-            
-            // Move the uploaded file to the temporary file path
-            if (move_uploaded_file($uploadedFile['tmp_name'], $tempFilePath)) {
-                $carImage = $uniqueFileName; // Store the unique file name for the database
-            } else {
-                $carImage = null; // File upload failed
+        $carId = $_POST['carId'];
+$carName = $_POST['carName'];
+$carType = $_POST['carType'];
+$plateNumber = $_POST['plateNumber'];
+$condo = $_POST['condo'];
+$RFID = $_POST['RFID'];
+
+$currentCar = $db->get_car_by_id($carId); // Fetch current car details from the database
+
+if (isset($_FILES['carImage']) && $_FILES['carImage']['error'] === UPLOAD_ERR_OK) {
+    $targetDir = '../../CarImages/';
+    $fileName = uniqid('car_', true) . '.' . strtolower(pathinfo($_FILES['carImage']['name'], PATHINFO_EXTENSION)); // Generate a unique file name
+    $targetFile = $targetDir . $fileName;
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+    // Check if the file is an image (optional)
+    $check = getimagesize($_FILES['carImage']['tmp_name']);
+    if ($check !== false) {
+        $uploadOk = 1;
+    } else {
+        echo "File is not an image.";
+        $uploadOk = 0;
+    }
+
+    // Check if file size (optional)
+    if ($_FILES['carImage']['size'] > 500000) { // Adjust the size limit as needed
+        echo "Sorry, your file is too large.";
+        $uploadOk = 0;
+    }
+
+    // Allow certain file formats (optional)
+    if (!in_array($imageFileType, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+        echo "Sorry, only JPG, JPEG, PNG, GIF, & WEBP files are allowed.";
+        $uploadOk = 0;
+    }
+
+    // Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 0) {
+        echo "Sorry, your file was not uploaded.";
+    } else {
+        if (move_uploaded_file($_FILES['carImage']['tmp_name'], $targetFile)) {
+            $filename = $fileName; // Save the unique filename to the database
+
+            // Unlink the old image file from the directory if it's not the same as the new one
+            if ($currentCar['CarImage'] && $currentCar['CarImage'] != $filename) {
+                unlink($targetDir . $currentCar['CarImage']); // Delete the old image
             }
         } else {
-            $carImage = null; // No file uploaded
+            echo "Sorry, there was an error uploading your file.";
+            $filename = ''; // Set filename to empty if upload failed
         }
-        
-        $carName = $_POST['carName'];
-        $carType = $_POST['carType'];
-        $plateNumber = $_POST['plateNumber'];
-        $condo = $_POST['condo'];
-        $RFID = $_POST['RFID'];
-        
-        // Call the UpdateCars function to update the car record in the database
-        $user = $db->UpdateCars($carName, $carType, $plateNumber, $condo, $RFID, $carImage);
-        
-        if ($user) {
-            if ($carImage) {
-                // If an image was uploaded, replace the existing image file
-                $existingFilePath = $uploadDir . $uniqueFileName;
-                
-                // Remove the existing file if it exists
-                if (file_exists($existingFilePath)) {
-                    unlink($existingFilePath);
-                }
-        
-                // Rename the temporary file to the final file name
-                rename($tempFilePath, $existingFilePath);
-            }
-        
-            echo "Car record updated successfully!";
-        } else {
-            // Clean up the temporary file if the update failed
-            if (isset($tempFilePath) && file_exists($tempFilePath)) {
-                unlink($tempFilePath);
-            }
-        
-            echo "Error updating car record.";
-        }
+    }
+} else {
+    // If no new image is uploaded, keep the existing image
+    $filename = $currentCar['CarImage'];
+}
+
+// Update the car information in the database
+$updateSuccess = $db->UpdateCars($carId, $carName, $carType, $plateNumber, $condo, $RFID, $filename);
+
+// Check if the update was successful
+if ($updateSuccess) {
+    echo 200;  // Success response
+} else {
+    echo 'Failed to update car record in the database.';
+}
+
         
 
         

@@ -36,6 +36,25 @@ class global_class extends db_connect
 
 
 
+    public function get_car_by_id($productId) {
+        // Simple query without bind_param(), directly injecting the product ID
+        $query = "SELECT `CarImage` FROM `cars` WHERE `car_id` = $productId";
+    
+        // Execute the query
+        $result = $this->conn->query($query);
+    
+        // Check if a product was found
+        if ($result->num_rows > 0) {
+            // Fetch the product details as an associative array
+            $product = $result->fetch_assoc();
+            return $product; // Return the product details
+        } else {
+            return null; // Return null if no product was found
+        }
+    }
+    
+
+
     public function AddnewCars($carName, $carType, $plateNumber, $condo, $RFID, $CarImage)
     {
         $query = $this->conn->prepare("INSERT INTO `cars` (carName, carType, plateNumber, condo, RFID, CarImage) VALUES (?, ?, ?, ?, ?, ?)");
@@ -52,7 +71,7 @@ class global_class extends db_connect
     }
 
 
-    public function UpdateCars($carName, $carType, $plateNumber, $condo, $RFID, $CarImage)
+    public function UpdateCars($carId,$carName, $carType, $plateNumber, $condo, $RFID, $CarImage)
     {
         // Base query without CarImage update
         $sql = "UPDATE `cars` 
@@ -64,7 +83,7 @@ class global_class extends db_connect
         }
     
         // Add a condition to identify the record to update (e.g., by RFID or plateNumber)
-        $sql .= " WHERE RFID = ?";
+        $sql .= " WHERE car_id  = ?";
     
         $query = $this->conn->prepare($sql);
         if ($query === false) {
@@ -73,9 +92,9 @@ class global_class extends db_connect
     
         // Bind parameters dynamically based on CarImage presence
         if (!empty($CarImage)) {
-            $query->bind_param("sssssss", $carName, $carType, $plateNumber, $condo, $RFID, $CarImage, $RFID);
+            $query->bind_param("sssssss", $carName, $carType, $plateNumber, $condo, $RFID, $CarImage, $carId);
         } else {
-            $query->bind_param("ssssss", $carName, $carType, $plateNumber, $condo, $RFID, $RFID);
+            $query->bind_param("ssssss", $carName, $carType, $plateNumber, $condo, $RFID, $carId);
         }
     
         if ($query->execute()) {
@@ -84,6 +103,8 @@ class global_class extends db_connect
             return false;
         }
     }
+
+    
     
 
     

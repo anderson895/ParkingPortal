@@ -130,7 +130,7 @@ function fetchCars() {
             if (response.status === 'success') {
                 displayCars(response.data, '#recordTable tbody');
             } else {
-                console.log(response.message);
+                // console.log(response.message);
             }
         },
         error: function (xhr, status, error) {
@@ -150,7 +150,7 @@ function fetchArchivedCars() {
             if (response.status === 'success') {
                 displayCars(response.data, '#archivedTable tbody');
             } else {
-                console.log(response.message);
+                // console.log(response.message);
             }
         },
         error: function (xhr, status, error) {
@@ -276,7 +276,7 @@ $(document).on('click', '.btnArchiveCar', function () {
 
 
 $(document).on('click', '.btnUpdateCar', function () {
-    
+    $('#carId_update').val($(this).attr('data-carID'))
     $('#carName_update').val($(this).attr('data-carName'))
     $('#carType_update').val($(this).attr('data-carType'))
     $('#plateNumber_update').val($(this).attr('data-plateNumber'))
