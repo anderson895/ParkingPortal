@@ -67,34 +67,62 @@ class global_class extends db_connect
     }
 
 
+    public function restoreCar($carID){
+        $query = $this->conn->prepare("UPDATE `cars` SET `carStatus` = '1' WHERE `cars`.`car_id` = ?");
+        if ($query === false) {
+            return false; 
+        }
+        $query->bind_param("i", $carID);
+    
+        if ($query->execute()) {
+            return true; 
+        } else {
+            return false; 
+        }
+    }
+    
+
     public function getAllCars()
     {
-        // Prepare the query
         $query = "SELECT * FROM cars WHERE carStatus='1'";
-    
-        // Execute the query
         $result = $this->conn->query($query);
-    
-        // Check if the query was successful
         if ($result === false) {
-            // Log or handle the error
             error_log("Query execution failed: " . $this->conn->error);
             return false;
         }
-    
-        // Check if there are any results
         if ($result->num_rows > 0) {
-            // Fetch the results and return them as an associative array
             $cars = [];
             while ($row = $result->fetch_assoc()) {
                 $cars[] = $row;
             }
             return $cars;
         } else {
-            // No cars found
             return false;
         }
     }
+    
+
+
+    public function GetAllArchiveCars()
+    {
+        $query = "SELECT * FROM cars WHERE carStatus='0'";
+        $result = $this->conn->query($query);
+        if ($result === false) {
+            error_log("Query execution failed: " . $this->conn->error);
+            return false;
+        }
+        if ($result->num_rows > 0) {
+            $cars = [];
+            while ($row = $result->fetch_assoc()) {
+                $cars[] = $row;
+            }
+            return $cars;
+        } else {
+            return false;
+        }
+    }
+
+
     
 
     

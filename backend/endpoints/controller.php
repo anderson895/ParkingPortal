@@ -85,7 +85,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo "Error adding car record.";
         }
+    }else if($_POST['requestType'] == 'restoreCar'){
 
+        $carID=$_POST['carID'];
+
+        $car = $db->restoreCar($carID);
+        
+        if ($car) {
+            echo "success";
+        } else {
+            echo "Error adding car record.";
+        }
+        // restoreCar
 
     } else {
         echo json_encode([
@@ -98,6 +109,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_GET['requestType'] == 'GetAllCars') {
         // Fetch the cars from the database
         $cars = $db->getAllCars();
+    
+        // Check if cars data exists
+        if ($cars !== false) {
+            // Return the cars data as JSON
+            echo json_encode(['status' => 'success', 'data' => $cars]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'No cars found or error retrieving data.']);
+        }
+    }else if ($_GET['requestType'] == 'GetAllArchiveCars') {
+        // Fetch the cars from the database
+        $cars = $db->GetAllArchiveCars();
     
         // Check if cars data exists
         if ($cars !== false) {

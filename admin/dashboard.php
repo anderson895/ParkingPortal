@@ -74,7 +74,9 @@
                     <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Plate Number</th>
                     <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Condo Unit Number</th>
                     <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">RFID Number</th>
-                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Archived Date</th>
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Time In</th>
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Time Out</th>
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Actions</th>
                 </tr>
             </thead>
             <tbody>
