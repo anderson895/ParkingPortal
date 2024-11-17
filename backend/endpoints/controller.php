@@ -30,53 +30,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
        
     }else if($_POST['requestType'] == 'AddNewCar'){
-                    if (isset($_FILES['carImage']) && $_FILES['carImage']['error'] == 0) {
-                        $uploadedFile = $_FILES['carImage'];
-                        $uploadDir = '../../CarImages/';
-                        
-                        // Get the original file extension
-                        $fileExtension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
-                        
-                        // Generate a unique file name using a timestamp and a random unique ID
-                        $uniqueFileName = uniqid('car_', true) . '.' . $fileExtension;
-                        $uploadFilePath = $uploadDir . $uniqueFileName;
-                    
-                        // Ensure the directory exists
-                        if (!is_dir($uploadDir)) {
-                            mkdir($uploadDir, 0777, true);
-                        }
-                    
-                        // Move the uploaded file to the target directory
-                        if (move_uploaded_file($uploadedFile['tmp_name'], $uploadFilePath)) {
-                            $carImage = $uniqueFileName; // Store the unique file name
-                        } else {
-                            $carImage = null; // File upload failed
-                        }
-                    } else {
-                        $carImage = null; // No file uploaded
-                    }
-                    
-                    // Collect other form data
-                    $carName = $_POST['carName'];
-                    $carType = $_POST['carType'];
-                    $plateNumber = $_POST['plateNumber'];
-                    $condo = $_POST['condo'];
-                    $RFID = $_POST['RFID'];
-                    
-                    // Insert the car record into the database
-                    $user = $db->AddnewCars($carName, $carType, $plateNumber, $condo, $RFID, $carImage);
-                    
-                    if ($user) {
-                        echo "Car record added successfully!";
-                    } else {
-                        echo "Error adding car record.";
-                    }
+        if (isset($_FILES['carImage']) && $_FILES['carImage']['error'] == 0) {
+            $uploadedFile = $_FILES['carImage'];
+            $uploadDir = '../../CarImages/';
+            
+            // Get the original file extension
+            $fileExtension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
+            
+            // Generate a unique file name using a timestamp and a random unique ID
+            $uniqueFileName = uniqid('car_', true) . '.' . $fileExtension;
+            $uploadFilePath = $uploadDir . $uniqueFileName;
         
+            // Ensure the directory exists
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
             }
+        
+            // Move the uploaded file to the target directory
+            if (move_uploaded_file($uploadedFile['tmp_name'], $uploadFilePath)) {
+                $carImage = $uniqueFileName; // Store the unique file name
+            } else {
+                $carImage = null; // File upload failed
+            }
+        } else {
+            $carImage = null; // No file uploaded
+        }
+        
+        // Collect other form data
+        $carName = $_POST['carName'];
+        $carType = $_POST['carType'];
+        $plateNumber = $_POST['plateNumber'];
+        $condo = $_POST['condo'];
+        $RFID = $_POST['RFID'];
+        
+        // Insert the car record into the database
+        $user = $db->AddnewCars($carName, $carType, $plateNumber, $condo, $RFID, $carImage);
+        
+        if ($user) {
+            echo "Car record added successfully!";
+        } else {
+            echo "Error adding car record.";
+        }
+        
         
 
 
     }else if($_POST['requestType'] == 'UpdateCar'){
+            
         if (isset($_FILES['carImage']) && $_FILES['carImage']['error'] == 0) {
             $uploadedFile = $_FILES['carImage'];
             $uploadDir = '../../CarImages/';
