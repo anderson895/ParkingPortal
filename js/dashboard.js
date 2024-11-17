@@ -81,6 +81,9 @@ function initFormSubmission() {
                 $('#plateNumber').val('')
                 $('#condo').val('')
                 $('#RFID').val('')
+                $('#carImage').val('')
+                
+                
                 // location.reload();
             },
             error: function (xhr, status, error) {

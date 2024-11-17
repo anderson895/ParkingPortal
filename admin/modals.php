@@ -5,23 +5,23 @@
         <!-- Modal Content (form or content) -->
         <form id="frmCar">
             <label for="carName" class="block mb-2">Car Owner's Name:</label>
-            <input type="text" id="carName" name="carName" class="border p-2 mb-4 w-full" placeholder="Enter car owner's name">
+            <input type="text" id="carName" name="carName" class="border p-2 mb-4 w-full" placeholder="Enter car owner's name" required>
             
             <label for="carType" class="block mb-2">Car type:</label>
-            <input type="text" id="carType" name="carType" class="border p-2 mb-4 w-full" placeholder="Enter vehicle model">
+            <input type="text" id="carType" name="carType" class="border p-2 mb-4 w-full" placeholder="Enter vehicle model" required>
 
             <label for="plateNumber" class="block mb-2">Car plate:</label>
-            <input type="text" id="plateNumber" name="plateNumber" class="border p-2 mb-4 w-full" placeholder="Enter Car plate number">
+            <input type="text" id="plateNumber" name="plateNumber" class="border p-2 mb-4 w-full" placeholder="Enter Car plate number" required>
             
             <label for="condo" class="block mb-2">Condo Unit No:</label>
-            <input type="text" id="condo" name="condo" class="border p-2 mb-4 w-full" placeholder="Enter Condo Unit">
+            <input type="text" id="condo" name="condo" class="border p-2 mb-4 w-full" placeholder="Enter Condo Unit" required>
 
             <label for="RFID" class="block mb-2">RFID No:</label>
-            <input type="text" id="RFID" name="RFID" class="border p-2 mb-4 w-full" placeholder="Enter RFID No">
+            <input type="text" id="RFID" name="RFID" class="border p-2 mb-4 w-full" placeholder="Enter RFID No" required>
             
             <!-- Image Upload Field -->
             <label for="carImage" class="block mb-2">Upload Car Image:</label>
-            <input type="file" id="carImage" name="carImage" class="border p-2 mb-4 w-full">
+            <input type="file" id="carImage" name="carImage" class="border p-2 mb-4 w-full" required>
             
             <!-- Add more form fields as needed -->
             
@@ -43,23 +43,23 @@
         <!-- Modal Content (form or content) -->
         <form id="frmCar_update">
             <label for="carName" class="block mb-2">Car Owner's Name:</label>
-            <input type="text" id="carName_update" name="carName" class="border p-2 mb-4 w-full" placeholder="Enter car owner's name">
+            <input type="text" id="carName_update" name="carName" class="border p-2 mb-4 w-full" placeholder="Enter car owner's name" required>
             
             <label for="carType" class="block mb-2">Car type:</label>
-            <input type="text" id="carType_update" name="carType" class="border p-2 mb-4 w-full" placeholder="Enter vehicle model">
+            <input type="text" id="carType_update" name="carType" class="border p-2 mb-4 w-full" placeholder="Enter vehicle model" required>
 
             <label for="plateNumber" class="block mb-2">Car plate:</label>
-            <input type="text" id="plateNumber_update" name="plateNumber" class="border p-2 mb-4 w-full" placeholder="Enter Car plate number">
+            <input type="text" id="plateNumber_update" name="plateNumber" class="border p-2 mb-4 w-full" placeholder="Enter Car plate number" required>
             
             <label for="condo" class="block mb-2">Condo Unit No:</label>
-            <input type="text" id="condo_update" name="condo" class="border p-2 mb-4 w-full" placeholder="Enter Condo Unit">
+            <input type="text" id="condo_update" name="condo" class="border p-2 mb-4 w-full" placeholder="Enter Condo Unit" required>
 
             <label for="RFID" class="block mb-2">RFID No:</label>
-            <input type="text" id="RFID_update" name="RFID" class="border p-2 mb-4 w-full" placeholder="Enter RFID No">
+            <input type="text" id="RFID_update" name="RFID" class="border p-2 mb-4 w-full" placeholder="Enter RFID No" required>
             
             <!-- Image Upload Field -->
             <label for="carImage" class="block mb-2">Upload Car Image:</label>
-            <input type="file" id="carImage_update" name="carImage" class="border p-2 mb-4 w-full">
+            <input type="file" id="carImage_update" name="carImage" class="border p-2 mb-4 w-full" required>
             
             <!-- Add more form fields as needed -->
             
