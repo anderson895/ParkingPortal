@@ -51,6 +51,21 @@ class global_class extends db_connect
         }
     }
 
+    
+    public function ArchivedCar($carID){
+        $query = $this->conn->prepare("UPDATE `cars` SET `carStatus` = '0' WHERE `cars`.`car_id` = ?");
+        if ($query === false) {
+            return false; 
+        }
+        $query->bind_param("i", $carID);
+    
+        if ($query->execute()) {
+            return true; 
+        } else {
+            return false; 
+        }
+    }
+
 
     public function getAllCars()
     {

@@ -74,6 +74,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
 
 
+    }else if($_POST['requestType'] == 'ArchivedCar'){
+
+        $carID=$_POST['carID'];
+
+        $car = $db->ArchivedCar($carID);
+        
+        if ($car) {
+            echo "success";
+        } else {
+            echo "Error adding car record.";
+        }
+
+
     } else {
         echo json_encode([
             'status' => 'error',

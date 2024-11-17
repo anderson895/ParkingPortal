@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div id="myModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center" style="display:none;">
+<div id="myModalAddCar" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center" style="display:none;">
     <div class="bg-white p-6 rounded-lg w-full sm:w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 max-h-[90vh] overflow-y-auto">
         <h3 class="text-xl font-semibold mb-4">Add New Record</h3>
         <!-- Modal Content (form or content) -->

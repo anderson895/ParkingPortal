@@ -10,21 +10,32 @@ $(document).ready(function() {
 // Modal handling functions
 function initModalActions() {
     $('#openModalBtn').click(function() {
-        $('#myModal').fadeIn();
+        $('#myModalAddCar').fadeIn();
     });
     
     $('#closeModalBtn').click(function() {
-        $('#myModal').fadeOut();
+        $('#myModalAddCar').fadeOut();
     });
     
     $(window).click(function(event) {
-        if ($(event.target).is('#myModal')) {
-            $('#myModal').fadeOut();
+        if ($(event.target).is('#myModalAddCar')) {
+            $('#myModalAddCar').fadeOut();
         }
     });
 }
 
-// Table show/hide functionality
+
+function setCarsAutoRefresh() {
+    setInterval(function() {
+        fetchCars();
+    }, 2000);
+}
+
+
+
+
+
+
 function showTable(tableId) {
     $("#recordTable, #archivedTable").addClass("hidden");
     $("#" + tableId).removeClass("hidden");
@@ -58,7 +69,9 @@ function initFormSubmission() {
             contentType: false,
             success: function(response) {
                 console.log(response);
-                alert('Record saved successfully!');
+                alertify.success('Record saved successfully!');
+                $('#myModalAddCar').fadeOut();
+                // location.reload();
             },
             error: function(xhr, status, error) {
                 alert('An error occurred. Please try again.');
@@ -76,7 +89,7 @@ function fetchCars() {
         dataType: 'json',
         success: function(response) {
             if (response.status === 'success') {
-                console.log(response.data);
+                // console.log(response.data);
                 displayCars(response.data);
             } else {
                 console.log(response.message);
@@ -87,6 +100,9 @@ function fetchCars() {
         }
     });
 }
+
+
+
 
 // Display car data in table
 function displayCars(cars) {
@@ -106,7 +122,9 @@ function displayCars(cars) {
                 <td class="px-4 py-2 text-sm text-gray-600">${car.timeIn ? car.timeIn : 'No Time In'}</td>
                 <td class="px-4 py-2 text-sm text-gray-600">${car.timeOut ? car.timeOut : 'No Time Out'}</td>
                 <td class="px-4 py-2 text-sm text-gray-600">
-                    <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400">
+                    <button class="btnArchiveCar bg-blue-600 hover:bg-gray-300 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+                    data-carID=${car.car_id }
+                    >
                         Archived
                     </button>
                 </td>
@@ -116,9 +134,37 @@ function displayCars(cars) {
     });
 }
 
-// Automatically refresh car data every 10 seconds
-function setCarsAutoRefresh() {
-    setInterval(function() {
-        fetchCars();
-    }, 10000);
-}
+
+
+$(document).on('click', '.btnArchiveCar', function() {
+    let carID = $(this).data('carid'); // Get the car ID from the button
+
+    console.log(carID)
+    // Confirm the action with the user
+    if (!confirm('Are you sure you want to archive this car?')) {
+        return;
+    }
+
+    // AJAX call to update car status
+    $.ajax({
+        url: '../backend/endpoints/controller.php', // API endpoint
+        method: 'POST',         // HTTP method
+        data: {
+            carID: carID,
+            requestType: 'ArchivedCar'   // The status to update
+        },
+        success: function(response) {
+            console.log(response);
+            if (response=="success") {
+                alertify.success('Car status updated successfully!');
+                
+            } else {
+                alertify.error('Failed to update car status. Please try again.');
+            }
+        },
+        error: function(error) {
+            console.error('Error updating car status:', error);
+            alert('An error occurred while updating the car status.');
+        }
+    });
+});
