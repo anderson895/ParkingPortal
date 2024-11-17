@@ -36,9 +36,8 @@ class global_class extends db_connect
 
 
 
-    public function get_car_by_id($productId) {
-        // Simple query without bind_param(), directly injecting the product ID
-        $query = "SELECT `CarImage` FROM `cars` WHERE `car_id` = $productId";
+    public function get_car_by_id($carId) {
+        $query = "SELECT `CarImage` FROM `cars` WHERE `car_id` = $carId";
     
         // Execute the query
         $result = $this->conn->query($query);
@@ -52,6 +51,21 @@ class global_class extends db_connect
             return null; // Return null if no product was found
         }
     }
+
+
+    public function fetch_all_logHistory($carId) {
+        // Simple query without bind_param(), directly injecting the product ID
+        $query = "SELECT * FROM `time_logs`
+        LEFT JOIN cars
+        ON cars.car_id = time_logs.time_car_id
+         WHERE `time_car_id` = $carId";
+    
+        // Execute the query
+        $result = $this->conn->query($query);
+    
+        return $result;
+    }
+       
     
 
 

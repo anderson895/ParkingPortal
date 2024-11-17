@@ -200,8 +200,8 @@ function displayCars(cars, tableSelector) {
                                 Restore
                             </button>`}
 
-                               <button class="btnViewCar bg-yellow-600 hover:bg-gray-300 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
-                            data-carID=${car.car_id}>
+                            <button class="btnViewCar bg-yellow-600 hover:bg-gray-300 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            onclick="location.href='view_record.php?carID=${car.car_id}'">
                                 View
                             </button>
                     </div>

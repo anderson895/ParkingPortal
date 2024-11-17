@@ -1,31 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PARKING PORTAL</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-   
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/alertify.css" integrity="sha512-MpdEaY2YQ3EokN6lCD6bnWMl5Gwk7RjBbpKLovlrH6X+DRokrPRAF3zQJl1hZUiLXfo2e9MrOt+udOnHCAmi5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
- 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.min.js" integrity="sha512-JnjG+Wt53GspUQXQhc+c4j8SBERsgJAoHeehagKHlxQN+MtCCmFDghX9/AcbkkNRZptyZU4zC8utK59M5L45Iw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-</head>
-<body class="bg-gray-100 p-6">
-
-    <!-- Navigation Bar -->
-    <nav class="bg-blue-600 text-white p-4 mb-6 rounded-lg shadow-md">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="#" class="text-xl font-bold">Parking Portal</a>
-            <ul class="flex space-x-6">
-                <li><button onclick="showTable('recordTable')" class="hover:text-blue-300">Record</button></li>
-                <li><button onclick="showTable('archivedTable')" class="hover:text-blue-300">Archived</button></li>
-                <li><button onclick="location.href='logout.php';" class="hover:text-blue-300">Logout</button></li>
-            </ul>
-        </div>
-    </nav>
+<?php 
+include "component/header.php";
+?>
 
     <!-- Header with Search -->
     <div class="flex items-center justify-between mb-4 space-x-4">
@@ -81,16 +56,7 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- <tr class="border-t">
-                    <td class="px-4 py-2 text-sm text-gray-600"><img src="https://carwow-uk-wp-0.imgix.net/18015-MC20BluInfinito-scaled-e1666008987698-600x338.jpg?auto=format&cs=tinysrgb&fit=crop&h=&ixlib=rb-1.1.0&q=60&w=1600" alt="Car Picture" class="w-12 h-12 object-cover"></td>
-                    <td class="px-4 py-2 text-sm text-gray-600">Jane Smith</td>
-                    <td class="px-4 py-2 text-sm text-gray-600">Honda Civic</td>
-                    <td class="px-4 py-2 text-sm text-gray-600">XYZ 789</td>
-                    <td class="px-4 py-2 text-sm text-gray-600">Unit 101</td>
-                    <td class="px-4 py-2 text-sm text-gray-600">RF654321</td>
-                    <td class="px-4 py-2 text-sm text-gray-600">2024-10-01</td>
-                </tr> -->
-                <!-- Add more rows as needed -->
+               
             </tbody>
         </table>
     </div>

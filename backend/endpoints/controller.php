@@ -77,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     }else if($_POST['requestType'] == 'UpdateCar'){
             
+        print_r($_POST);
         $carId = $_POST['carId'];
 $carName = $_POST['carName'];
 $carType = $_POST['carType'];
