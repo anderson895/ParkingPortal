@@ -263,7 +263,25 @@ if ($updateSuccess) {
         } else {
             echo json_encode(['status' => 'error', 'message' => 'No cars found or error retrieving data.']);
         }
+    }else if ($_GET['requestType'] == 'GetAutoArchive') {
+        $archivedCarsCount = $db->get_auto_archive();
+
+        // Output the result
+        if ($archivedCarsCount > 0) {
+            echo "$archivedCarsCount cars were archived successfully.";
+        } else {
+            echo "No cars were archived.";
+        }
+        
+        var_dump($archivedCarsCount); // For debugging purposes
+        
+        if ($archivedCarsCount) {
+            echo "success";  // Return success if the operation was successful
+        } else {
+            echo "Error archiving cars.";  // If the operation failed
+        }
     }
+    
     
 }
 ?>

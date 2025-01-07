@@ -10,6 +10,60 @@ class global_class extends db_connect
     }
 
 
+    public function get_auto_archive() {
+        // Get current date minus one month
+        $one_month_ago = date('Y-m-d H:i:s', strtotime('-1 month'));
+    
+        // Query to select cars that either have no time logs or their most recent time log is older than 1 month
+        $query = "
+            UPDATE cars
+            SET carStatus = 0
+            WHERE carStatus = 1  -- Only update active cars (carStatus = 1)
+            AND (
+                -- Condition 1: Cars with no time logs
+                car_id NOT IN (
+                    SELECT DISTINCT time_car_id 
+                    FROM time_logs
+                )
+                OR
+                -- Condition 2: Cars with most recent time_in older than 1 month
+                car_id IN (
+                    SELECT time_car_id
+                    FROM time_logs
+                    GROUP BY time_car_id
+                    HAVING MAX(time_in) < '$one_month_ago'
+                )
+            );
+        ";
+    
+        // Log the query for debugging
+        error_log("Query: " . $query);
+    
+        // Execute the query
+        $result = $this->conn->query($query);
+        
+        if ($result) {
+            // Log the number of affected rows
+            error_log("Affected rows: " . $this->conn->affected_rows);
+    
+            // Return the number of affected rows to confirm how many cars were archived
+            return $this->conn->affected_rows;
+        } else {
+            // Log the error if the query fails
+            error_log("Error: " . $this->conn->error);
+    
+            // If there was an issue with the query, return NULL
+            return NULL;
+        }
+    }
+    
+    
+    
+    
+
+
+    
+
     public function Login($username, $password)
     {
         $query = $this->conn->prepare("SELECT * FROM `users` WHERE `username` = ? AND `password` = ?");

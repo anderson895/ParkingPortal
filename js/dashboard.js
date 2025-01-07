@@ -6,6 +6,7 @@ $(document).ready(function () {
     fetchArchivedCars();
     setCarsAutoRefresh();
     bindTableFilter();
+    get_auto_archive();
 });
 
 // Modal handling functions
@@ -38,6 +39,7 @@ function setCarsAutoRefresh() {
     setInterval(function () {
         fetchCars();
         fetchArchivedCars();
+        get_auto_archive();
     }, 2000);
 }
 
@@ -123,6 +125,35 @@ function initFormSubmission() {
     });
 
 }
+
+
+
+
+
+
+
+// Fetch car data for active cars
+function get_auto_archive() {
+    $.ajax({
+        type: "GET",
+        url: '../backend/endpoints/controller.php',
+        data: { requestType: 'GetAutoArchive' },
+        success: function (response) {
+            console.log(response);
+            
+        },
+        error: function (xhr, status, error) {
+            console.log('AJAX error: ' + error);  // Log any error with the AJAX request
+        }
+    });
+}
+
+
+
+
+
+
+
 
 // Fetch car data for active cars
 function fetchCars() {
