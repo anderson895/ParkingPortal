@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 07, 2025 at 07:49 AM
+-- Generation Time: Jan 07, 2025 at 09:27 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,12 +45,12 @@ CREATE TABLE `cars` (
 --
 
 INSERT INTO `cars` (`car_id`, `carName`, `carType`, `plateNumber`, `condo`, `RFID`, `CarImage`, `cctImage`, `date_added`, `carStatus`) VALUES
-(10, 'Joshua Padilla', 'SUV', '123123', '323423', '4444', 'car_67396c723b97f5.52945636.jpeg', 'cct_677cc40cd5e026.79366182.webp', '2025-01-07 06:49:07', 1),
-(11, 'April Jane', 'SEDAN', '654645', 'wqqwe12', '1223443', 'car_673977667e5980.40155464.jpeg', '', '2025-01-07 06:49:07', 0),
-(12, 'Mary Jane', 'Sports Car', '2154A', '0001', '5443312', 'car_6739776f5d2331.97468192.jpeg', 'cct_677cc4df98c2b6.55800238.jpg', '2025-01-07 06:49:07', 1),
-(13, 'padilla', 'COUPE', 'ABC123', '20', '9999', 'car_677cc42d5e1491.66473708.jpeg', 'cct_677cc4711d3650.06685087.jpeg', '2025-01-07 06:49:07', 1),
-(14, 'joshua', 'SUV', 'qweqwe', '131231', '232314342', 'car_677cbdf68cda84.27592005.webp', 'cct_677cc922ef1736.43072660.jpeg', '2025-01-07 06:49:07', 1),
-(15, 'andy anderson', 'Sports Car', 'XT1234', '101', '213423', 'car_677cca08edfe65.11226923.jpeg', 'cct_677cca08ede222.16002360.jpeg', '2025-01-07 06:49:07', 0);
+(11, 'April Jane', 'SEDAN', '654645', 'wqqwe12', '1223443', 'car_673977667e5980.40155464.jpeg', '', '2025-01-07 08:20:02', 1),
+(12, 'Mary Jane', 'Sports Car', '2154A', '0001', '5443312', 'car_6739776f5d2331.97468192.jpeg', 'cct_677cc4df98c2b6.55800238.jpg', '2025-01-07 08:15:52', 1),
+(13, 'padilla', 'COUPE', 'ABC123', '20', '9999', 'car_677cc42d5e1491.66473708.jpeg', 'cct_677cc4711d3650.06685087.jpeg', '2025-01-07 08:15:46', 1),
+(14, 'joshua', 'SUV', 'qweqwe', '131231', '232314342', 'car_677cbdf68cda84.27592005.webp', 'cct_677cc922ef1736.43072660.jpeg', '2025-01-07 08:26:10', 1),
+(15, 'andy anderson', 'Sports Car', 'XT1234', '101', '213423', 'car_677cca08edfe65.11226923.jpeg', 'cct_677cca08ede222.16002360.jpeg', '2025-01-07 08:21:46', 1),
+(16, 'john doe', 'Sports Car', 'BXTY2021', 'room 101', 'qweqwer12313', 'car_677ce4c22d42b2.38946944.jpg', 'cct_677ce4c22d2672.86982639.jpg', '2025-01-07 08:24:54', 1);
 
 -- --------------------------------------------------------
 
@@ -71,14 +71,7 @@ CREATE TABLE `time_logs` (
 --
 
 INSERT INTO `time_logs` (`time_id`, `time_car_id`, `time_date`, `time_in`, `time_out`) VALUES
-(2, 11, '2024-11-16', '2024-11-16 05:33:27', '2024-11-16 13:03:53'),
-(3, 11, '2024-11-15', '2024-11-16 05:33:27', '2024-11-16 13:03:53'),
-(4, 11, '2024-11-17', '2024-11-16 05:33:27', '2024-11-16 13:03:53'),
-(5, 10, '2024-11-17', '2024-11-16 05:33:27', '2024-11-16 13:03:53'),
-(6, 10, '2024-10-17', '2024-10-16 05:33:27', '2024-10-16 13:03:53'),
-(7, 12, '2023-06-17', '2024-11-17 07:26:16', '2024-11-22 17:48:12'),
-(8, 11, '2024-11-22', '2024-11-22 10:47:03', '2024-11-22 17:50:04'),
-(9, 12, '2024-11-22', '2024-11-22 10:51:33', '2024-11-22 17:52:29');
+(17, 14, '2025-01-07', '2025-07-07 10:22:00', '2025-01-07 15:22:28');
 
 -- --------------------------------------------------------
 
@@ -114,7 +107,7 @@ ALTER TABLE `cars`
 --
 ALTER TABLE `time_logs`
   ADD PRIMARY KEY (`time_id`),
-  ADD KEY `time_car_id` (`time_car_id`);
+  ADD KEY `time_logs_ibfk_1` (`time_car_id`);
 
 --
 -- Indexes for table `users`
@@ -130,13 +123,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cars`
 --
 ALTER TABLE `cars`
-  MODIFY `car_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `car_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `time_logs`
 --
 ALTER TABLE `time_logs`
-  MODIFY `time_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `time_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -152,7 +145,7 @@ ALTER TABLE `users`
 -- Constraints for table `time_logs`
 --
 ALTER TABLE `time_logs`
-  ADD CONSTRAINT `time_logs_ibfk_1` FOREIGN KEY (`time_car_id`) REFERENCES `cars` (`car_id`);
+  ADD CONSTRAINT `time_logs_ibfk_1` FOREIGN KEY (`time_car_id`) REFERENCES `cars` (`car_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
