@@ -30,6 +30,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
        
     }else if($_POST['requestType'] == 'AddNewCar'){
+        if (isset($_FILES['cctImage']) && $_FILES['cctImage']['error'] == 0) {
+            $uploadedFile = $_FILES['cctImage'];
+            $uploadDir = '../../cctImages/';
+            
+            // Get the original file extension
+            $fileExtension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
+            
+            // Generate a unique file name using a timestamp and a random unique ID
+            $uniqueFileName = uniqid('cct_', true) . '.' . $fileExtension;
+            $uploadFilePath = $uploadDir . $uniqueFileName;
+        
+            // Ensure the directory exists
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+        
+            // Move the uploaded file to the target directory
+            if (move_uploaded_file($uploadedFile['tmp_name'], $uploadFilePath)) {
+                $cctImage = $uniqueFileName; // Store the unique file name
+            } else {
+                $cctImage = null; // File upload failed
+            }
+        } else {
+            $cctImage = null; // No file uploaded
+        }
+
+
         if (isset($_FILES['carImage']) && $_FILES['carImage']['error'] == 0) {
             $uploadedFile = $_FILES['carImage'];
             $uploadDir = '../../CarImages/';
@@ -64,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $RFID = $_POST['RFID'];
         
         // Insert the car record into the database
-        $user = $db->AddnewCars($carName, $carType, $plateNumber, $condo, $RFID, $carImage);
+        $user = $db->AddnewCars($carName, $carType, $plateNumber, $condo, $RFID, $carImage,$cctImage);
         
         if ($user) {
             echo "Car record added successfully!";
@@ -77,71 +104,102 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     }else if($_POST['requestType'] == 'UpdateCar'){
             
-        print_r($_POST);
-        $carId = $_POST['carId'];
+      // Retrieve form data
+$carId = $_POST['carId'];
 $carName = $_POST['carName'];
 $carType = $_POST['carType'];
 $plateNumber = $_POST['plateNumber'];
 $condo = $_POST['condo'];
 $RFID = $_POST['RFID'];
 
-$currentCar = $db->get_car_by_id($carId); // Fetch current car details from the database
+// Get current car and CCT images from the database
+$currentCar = $db->get_car_by_id($carId);
+$currentCct = $db->get_cct_by_id($carId);
 
-if (isset($_FILES['carImage']) && $_FILES['carImage']['error'] === UPLOAD_ERR_OK) {
-    $targetDir = '../../CarImages/';
-    $fileName = uniqid('car_', true) . '.' . strtolower(pathinfo($_FILES['carImage']['name'], PATHINFO_EXTENSION)); // Generate a unique file name
+// Process CCT Image
+$filenameCctImage = $currentCct['cctImage']; // Default to current image
+if (isset($_FILES['cctImage']) && $_FILES['cctImage']['error'] === UPLOAD_ERR_OK) {
+    $targetDir = '../../cctImages/';
+    $fileName = uniqid('cct_', true) . '.' . strtolower(pathinfo($_FILES['cctImage']['name'], PATHINFO_EXTENSION));
     $targetFile = $targetDir . $fileName;
+
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
-    // Check if the file is an image (optional)
-    $check = getimagesize($_FILES['carImage']['tmp_name']);
-    if ($check !== false) {
-        $uploadOk = 1;
-    } else {
+    // Validate file
+    $check = getimagesize($_FILES['cctImage']['tmp_name']);
+    if (!$check) {
         echo "File is not an image.";
         $uploadOk = 0;
     }
 
-    // Check if file size (optional)
-    if ($_FILES['carImage']['size'] > 500000) { // Adjust the size limit as needed
+    if ($_FILES['cctImage']['size'] > 500000) {
         echo "Sorry, your file is too large.";
         $uploadOk = 0;
     }
 
-    // Allow certain file formats (optional)
     if (!in_array($imageFileType, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
         echo "Sorry, only JPG, JPEG, PNG, GIF, & WEBP files are allowed.";
         $uploadOk = 0;
     }
 
-    // Check if $uploadOk is set to 0 by an error
-    if ($uploadOk == 0) {
-        echo "Sorry, your file was not uploaded.";
-    } else {
-        if (move_uploaded_file($_FILES['carImage']['tmp_name'], $targetFile)) {
-            $filename = $fileName; // Save the unique filename to the database
+    if ($uploadOk && move_uploaded_file($_FILES['cctImage']['tmp_name'], $targetFile)) {
+        $filenameCctImage = $fileName;
 
-            // Unlink the old image file from the directory if it's not the same as the new one
-            if ($currentCar['CarImage'] && $currentCar['CarImage'] != $filename) {
-                unlink($targetDir . $currentCar['CarImage']); // Delete the old image
-            }
-        } else {
-            echo "Sorry, there was an error uploading your file.";
-            $filename = ''; // Set filename to empty if upload failed
+        // Remove old image
+        if (!empty($currentCar['cctImage']) && $currentCar['cctImage'] !== $filenameCctImage) {
+            unlink($targetDir . $currentCar['cctImage']);
         }
+    } else {
+        echo "Error uploading CCT image.";
     }
-} else {
-    // If no new image is uploaded, keep the existing image
-    $filename = $currentCar['CarImage'];
+}
+
+// Process Car Image
+$filenameCarImage = $currentCar['CarImage']; // Default to current image
+if (isset($_FILES['carImage']) && $_FILES['carImage']['error'] === UPLOAD_ERR_OK) {
+    $targetDir = '../../CarImages/';
+    $fileName = uniqid('car_', true) . '.' . strtolower(pathinfo($_FILES['carImage']['name'], PATHINFO_EXTENSION));
+    $targetFile = $targetDir . $fileName;
+
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+    // Validate file
+    $check = getimagesize($_FILES['carImage']['tmp_name']);
+    if (!$check) {
+        echo "File is not an image.";
+        $uploadOk = 0;
+    }
+
+    if ($_FILES['carImage']['size'] > 500000) {
+        echo "Sorry, your file is too large.";
+        $uploadOk = 0;
+    }
+
+    if (!in_array($imageFileType, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+        echo "Sorry, only JPG, JPEG, PNG, GIF, & WEBP files are allowed.";
+        $uploadOk = 0;
+    }
+
+    if ($uploadOk && move_uploaded_file($_FILES['carImage']['tmp_name'], $targetFile)) {
+        $filenameCarImage = $fileName;
+
+        // Remove old image
+        if (!empty($currentCar['CarImage']) && $currentCar['CarImage'] !== $filenameCarImage) {
+            unlink($targetDir . $currentCar['CarImage']);
+        }
+    } else {
+        echo "Error uploading car image.";
+    }
 }
 
 // Update the car information in the database
-$updateSuccess = $db->UpdateCars($carId, $carName, $carType, $plateNumber, $condo, $RFID, $filename);
+$updateSuccess = $db->UpdateCars($carId, $carName, $carType, $plateNumber, $condo, $RFID, $filenameCarImage, $filenameCctImage);
 
 // Check if the update was successful
 if ($updateSuccess) {
-    echo 200;  // Success response
+    echo 200; // Success response
 } else {
     echo 'Failed to update car record in the database.';
 }

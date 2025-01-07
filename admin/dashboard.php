@@ -21,6 +21,7 @@ include "component/header.php";
         <thead class="bg-gray-100">
             <tr>
                 <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Picture of Car</th>
+                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Certificate of Title (CCT)</th>
                 <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Car Owner's Name</th>
                 <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Vehicle Model</th>
                 <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Plate Number</th>
@@ -45,6 +46,7 @@ include "component/header.php";
             <thead class="bg-gray-100">
                 <tr>
                     <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Picture of Car</th>
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Certificate of Title (CCT)</th>
                     <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Car Owner's Name</th>
                     <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Vehicle Model</th>
                     <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Plate Number</th>

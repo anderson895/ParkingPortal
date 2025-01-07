@@ -38,17 +38,24 @@ class global_class extends db_connect
 
     public function get_car_by_id($carId) {
         $query = "SELECT `CarImage` FROM `cars` WHERE `car_id` = $carId";
-    
-        // Execute the query
         $result = $this->conn->query($query);
-    
-        // Check if a product was found
         if ($result->num_rows > 0) {
-            // Fetch the product details as an associative array
             $product = $result->fetch_assoc();
-            return $product; // Return the product details
+            return $product;
         } else {
-            return null; // Return null if no product was found
+            return null;
+        }
+    }
+
+
+    public function get_cct_by_id($carId) {
+        $query = "SELECT `cctImage` FROM `cars` WHERE `car_id` = $carId";
+        $result = $this->conn->query($query);
+        if ($result->num_rows > 0) {
+            $product = $result->fetch_assoc();
+            return $product;
+        } else {
+            return null;
         }
     }
 
@@ -163,13 +170,13 @@ class global_class extends db_connect
 
 
 
-    public function AddnewCars($carName, $carType, $plateNumber, $condo, $RFID, $CarImage)
+    public function AddnewCars($carName, $carType, $plateNumber, $condo, $RFID, $CarImage,$cctImage)
     {
-        $query = $this->conn->prepare("INSERT INTO `cars` (carName, carType, plateNumber, condo, RFID, CarImage) VALUES (?, ?, ?, ?, ?, ?)");
+        $query = $this->conn->prepare("INSERT INTO `cars` (carName, carType, plateNumber, condo, RFID, CarImage,cctImage) VALUES (?, ?, ?, ?, ?, ?,?)");
         if ($query === false) {
             return false; 
         }
-        $query->bind_param("ssssss", $carName, $carType, $plateNumber, $condo, $RFID, $CarImage);
+        $query->bind_param("sssssss", $carName, $carType, $plateNumber, $condo, $RFID, $CarImage,$cctImage);
     
         if ($query->execute()) {
             return true; 
@@ -179,38 +186,52 @@ class global_class extends db_connect
     }
 
 
-    public function UpdateCars($carId,$carName, $carType, $plateNumber, $condo, $RFID, $CarImage)
+    public function UpdateCars($carId, $carName, $carType, $plateNumber, $condo, $RFID, $CarImage, $CctImage)
     {
-        // Base query without CarImage update
+        // Base query
         $sql = "UPDATE `cars` 
                 SET carName = ?, carType = ?, plateNumber = ?, condo = ?, RFID = ?";
         
-        // Append CarImage update only if it's provided
+        // Parameters array to match placeholders
+        $params = [$carName, $carType, $plateNumber, $condo, $RFID];
+        $types = "sssss"; // Data types: all strings here
+        
+        // Append CarImage to query and parameters if provided
         if (!empty($CarImage)) {
             $sql .= ", CarImage = ?";
+            $params[] = $CarImage;
+            $types .= "s"; // Add a type for CarImage
         }
+        
+        // Append CctImage to query and parameters if provided
+        if (!empty($CctImage)) {
+            $sql .= ", cctImage = ?";
+            $params[] = $CctImage;
+            $types .= "s"; // Add a type for CctImage
+        }
+        
+        // Append the WHERE condition
+        $sql .= " WHERE car_id = ?";
+        $params[] = $carId;
+        $types .= "s"; // Add a type for carId
     
-        // Add a condition to identify the record to update (e.g., by RFID or plateNumber)
-        $sql .= " WHERE car_id  = ?";
-    
+        // Prepare the query
         $query = $this->conn->prepare($sql);
         if ($query === false) {
             return false;
         }
     
-        // Bind parameters dynamically based on CarImage presence
-        if (!empty($CarImage)) {
-            $query->bind_param("sssssss", $carName, $carType, $plateNumber, $condo, $RFID, $CarImage, $carId);
-        } else {
-            $query->bind_param("ssssss", $carName, $carType, $plateNumber, $condo, $RFID, $carId);
-        }
+        // Bind parameters dynamically
+        $query->bind_param($types, ...$params);
     
+        // Execute the query
         if ($query->execute()) {
             return true;
         } else {
             return false;
         }
     }
+    
 
     
     

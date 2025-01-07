@@ -74,7 +74,7 @@ function initFormSubmission() {
             processData: false,
             contentType: false,
             success: function (response) {
-                console.log(response);
+                // console.log(response);
                 alertify.success('Record saved successfully!');
                 $('#carName').val('')
                 $('#carType').val('')
@@ -82,6 +82,7 @@ function initFormSubmission() {
                 $('#condo').val('')
                 $('#RFID').val('')
                 $('#carImage').val('')
+                $('#cctImage').val('')
                 
                 
                 // location.reload();
@@ -107,6 +108,10 @@ function initFormSubmission() {
             contentType: false,
             success: function (response) {
                 console.log(response);
+
+                $('#carImage_update').val('')
+                $('#cctImage_update').val('')
+
                 alertify.success('Record saved successfully!');
                 $('#myModalUpdateCar').fadeOut();
                 // location.reload();
@@ -128,12 +133,12 @@ function fetchCars() {
         dataType: 'json',
         success: function (response) {
 
-            console.log(response)
+            // console.log(response)
 
             if (response.status === 'success') {
                 displayCars(response.data, '#recordTable tbody');
             } else {
-                console.log(response.message);
+                // console.log(response.message);
             }
         },
         error: function (xhr, status, error) {
@@ -162,6 +167,10 @@ function fetchArchivedCars() {
     });
 }
 
+
+
+
+
 // Display car data in specified table
 function displayCars(cars, tableSelector) {
     let tableBody = $(tableSelector);
@@ -170,8 +179,25 @@ function displayCars(cars, tableSelector) {
         let carRow = `
             <tr class="border-t">
                 <td class="px-4 py-2 text-sm text-gray-600">
-                    <img src="../CarImages/${car.CarImage}" alt="Car Picture" class="w-12 h-12 object-cover">
+                    <img 
+                        src="../CarImages/${car.CarImage ? car.CarImage : 'pngtree-no-image-available.jpg'}" 
+                        alt="${car.CarImage ? 'Car Picture' : 'No Image Available'}" 
+                        class="w-12 h-12 object-cover cursor-pointer carImage"
+                        data-large-image="../CarImages/${car.CarImage ? car.CarImage : 'pngtree-no-image-available.jpg'}"
+                        onerror="this.src='pngtree-no-image-available.jpg'; this.alt='No Image Available';"
+                    >
                 </td>
+                <td class="px-4 py-2 text-sm text-gray-600">
+                    <img 
+                        src="../cctImages/${car.cctImage ? car.cctImage : 'pngtree-no-image-available.jpg'}" 
+                        alt="${car.cctImage ? 'Car Picture' : 'No Image Available'}" 
+                        class="w-12 h-12 object-cover cursor-pointer cctImage"
+                        data-large-image="../cctImages/${car.cctImage ? car.cctImage : 'pngtree-no-image-available.jpg'}"
+                        onerror="this.src='pngtree-no-image-available.jpg'; this.alt='No Image Available';"
+                    >
+                </td>
+
+                <!-- Other table data -->
                 <td class="px-4 py-2 text-sm text-gray-600">${car.carName}</td>
                 <td class="px-4 py-2 text-sm text-gray-600">${car.carType}</td>
                 <td class="px-4 py-2 text-sm text-gray-600">${car.plateNumber}</td>
@@ -218,7 +244,28 @@ function displayCars(cars, tableSelector) {
         `;
         tableBody.append(carRow);
     });
+
+    // Add event listener for the car image click
+    $('.carImage').click(function() {
+        var largeImage = $(this).data('large-image');
+        $('#modalImage').attr('src', largeImage);
+        $('#imageModal').removeClass('hidden');
+    });
+
+    // Add event listener for the cct image click
+    $('.cctImage').click(function() {
+        var largeImage = $(this).data('large-image');
+        $('#modalImage').attr('src', largeImage);
+        $('#imageModal').removeClass('hidden');
+    });
+
+    // Close the modal
+    $('#closeModal').click(function() {
+        $('#imageModal').addClass('hidden');
+    });
 }
+
+
 
 
 // Handle archiving a car
@@ -238,7 +285,7 @@ $(document).on('click', '.btnRestoreCar', function () {
             requestType: 'restoreCar'
         },
         success: function (response) {
-            console.log(response);
+            // console.log(response);
             if (response === "success") {
                 alertify.success('Car Restore successfully!');
                 location.reload();
@@ -269,7 +316,7 @@ $(document).on('click', '.btnArchiveCar', function () {
             requestType: 'ArchivedCar'
         },
         success: function (response) {
-            console.log(response);
+            // console.log(response);
             if (response === "success") {
                 alertify.success('Car Archived successfully!');
                 fetchCars();
