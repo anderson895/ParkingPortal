@@ -19,6 +19,11 @@ class global_class extends db_connect
             UPDATE cars
             SET carStatus = 0
             WHERE carStatus = 1  -- Only update active cars (carStatus = 1)
+            AND car_id IN (
+                -- Only update cars that already have time logs
+                SELECT DISTINCT time_car_id
+                FROM time_logs
+            )
             AND (
                 -- Condition 1: Cars with no time logs
                 car_id NOT IN (
@@ -35,10 +40,10 @@ class global_class extends db_connect
                 )
             );
         ";
-    
+        
         // Log the query for debugging
         error_log("Query: " . $query);
-    
+        
         // Execute the query
         $result = $this->conn->query($query);
         
@@ -56,6 +61,7 @@ class global_class extends db_connect
             return NULL;
         }
     }
+    
     
     
     
